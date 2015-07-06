@@ -262,8 +262,8 @@ class 'ProStats'
 		if self.lastLog + 1 < GetInGameTimer() then
 			self.lastLog = GetInGameTimer()
 			saveString = "#"..string.format("%d",GetInGameTimer()).."|"..self.scores.killCurrent .. "|" .. self.scores.deathCurrent .. "|" .. self.scores.assistCurrent .. "|" .. self.scores.minionCurrent .. "|" ..myHero.charName
-			--self:storeData(saveString)
-			local update = self:getSecondStats(1200)
+			self:storeData(saveString)
+			local update = self:getSecondStats()
 			self.scores.kill = update.kill
 			self.scores.death = update.death
 			self.scores.assist = update.assist
