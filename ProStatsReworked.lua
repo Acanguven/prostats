@@ -11,7 +11,6 @@ class 'ProStats'
 		end
 		
 		self.datas = {}
-		self.heroBased = false
 		self.gameName = false
 		self.panelHidden = false
 		self.lastLog = 1
@@ -50,10 +49,17 @@ class 'ProStats'
 			minionStatus = {data=0,positive=false}, 
 		}
 
+
+		self.menu = scriptConfig('Pro Stats', 'prostats')
+		self.menu:addParam('heroBased',  'Champion spesific stats',  SCRIPT_PARAM_ONOFF, false)
+		self.menu:addParam('recordOff',  'Disable game recording',  SCRIPT_PARAM_ONOFF, false)
+		self.menu:addParam("version", "Script Version", SCRIPT_PARAM_INFO, proStatsVersion)
+
+
 		self:createLogTable()
 		if self:getSecondStats(5).new then
 			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">This your first time playing ".. myHero.charName ..", so hero based stats will be disabled for this game.</font>")
-			self.heroBased = false
+			self.menu.heroBased = false
 		end
 		self:createViews()
 		AddTickCallback(function() self:updateViews() end)
@@ -61,10 +67,10 @@ class 'ProStats'
 		AddRecvPacketCallback2(function(p) self:tracePackets(p) end)
 		AddTickCallback(function() self:updateCurrentStats() end)
 		
+		
 
-		if GetInGameTimer() < 90 then
-			
-		else
+		if GetInGameTimer() > 90 then
+			self.menu.recordOff = true
 			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">Game recording disabled, you ran Pro Stats after 1:30</font>")
 		end
 	end
@@ -261,8 +267,10 @@ class 'ProStats'
 	function ProStats:updateState()
 		if self.lastLog + 1 < GetInGameTimer() then
 			self.lastLog = GetInGameTimer()
-			saveString = "#"..string.format("%d",GetInGameTimer()).."|"..self.scores.killCurrent .. "|" .. self.scores.deathCurrent .. "|" .. self.scores.assistCurrent .. "|" .. self.scores.minionCurrent .. "|" ..myHero.charName
-			self:storeData(saveString)
+			if not self.menu.recordOff then
+				saveString = "#"..string.format("%d",GetInGameTimer()).."|"..self.scores.killCurrent .. "|" .. self.scores.deathCurrent .. "|" .. self.scores.assistCurrent .. "|" .. self.scores.minionCurrent .. "|" ..myHero.charName
+				self:storeData(saveString)
+			end
 			local update = self:getSecondStats()
 			self.scores.kill = update.kill
 			self.scores.death = update.death
@@ -341,7 +349,7 @@ class 'ProStats'
 		local iteration = 0
 
 		for _,v in pairs(self.datas) do
-			if ch == v.champion or not self.heroBased then
+			if ch == v.champion or not self.menu.heroBased then
 				stat.new = false
 			    if math.abs(tonumber(v.second) - sc) <= 5 then
 			    	stat.kill = stat.kill + v.kill
