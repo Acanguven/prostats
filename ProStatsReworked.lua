@@ -4,8 +4,8 @@ class 'Update'
 	function Update:__init(version)
 		--|> Script info
 		self.version     = version
-		self.scriptLink  = "https://raw.githubusercontent.com/SkeemBoL/BoL/master/Katarina%20Rework.lua"
-		self.versionLink = "https://raw.githubusercontent.com/SkeemBoL/BoL/master/Katarina%20Rework.version"
+		self.scriptLink  = "https://raw.githubusercontent.com/thelaw44/prostats/master/ProStatsReworked.lua"
+		self.versionLink = "https://raw.githubusercontent.com/thelaw44/prostats/master/ProStatsReworked.version"
 		self.path        = SCRIPT_PATH .. _ENV.FILE_NAME
 
 		--|> Variables
