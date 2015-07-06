@@ -41,7 +41,7 @@ class 'ProStats'
 			minionCurrent = 0,
 			kill = 0,
 			death = 0,
-			overall = 0,
+			overall = {data=0,positive=false},
 			assist = 0,
 			minion = 0,
 			killStatus = {data=0,positive=false},
@@ -126,7 +126,7 @@ class 'ProStats'
 		self.overallText:setSize(self.locations.overallText.size)
 		self.overallText:setLayer(3)
 
-		self.overallScore = self.statsPage:addText(self:ntos(0,6))
+		self.overallScore = self.statsPage:addText(self:ntos(self.scores.overall.data,6))
 		self.overallScore:setPosition(self.statsBar.x + self.locations.overallScore.x, self.statsBar.y + self.locations.overallScore.y)
 		self.overallScore:setSize(self.locations.overallScore.size)
 		self.overallScore:setLayer(3)
@@ -182,7 +182,6 @@ class 'ProStats'
 			self.deathAvarage.text = self:ntos(self.scores.death,2)
 			self.assistAvarage.text = self:ntos(self.scores.assist,2)
 			self.minionAvarage.text = self:ntos(self.scores.minion,5)
-			self.overallScore.text = self:ntos(self.scores.overall,6)
 
 			self.killStatus.text = self:ntos(self.scores.killStatus.data,3)
 			self.killStatus.color = self:getcolor(self.scores.killStatus)
@@ -200,7 +199,7 @@ class 'ProStats'
 			self.minionStatus.color = self:getcolor(self.scores.minionStatus)
 			self.minionAvarage.color = self.minionStatus.color
 
-			self.overallScore.text = self:ntos(self.scores.overallScore.data,6)
+			self.overallScore.text = self:ntos(self.scores.overall.data,6)
 			self.overallScore.color = self:getcolor(self.scores.overallScore)
 			self.overallText.color = self.overallScore.color
 		end
