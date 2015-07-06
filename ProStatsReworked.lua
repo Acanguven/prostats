@@ -199,7 +199,7 @@ class 'ProStats'
 			self.minionStatus.color = self:getcolor(self.scores.minionStatus)
 			self.minionAvarage.color = self.minionStatus.color
 
-			self.overallScore.text = self:ntos(self.scores.overall.data,6)
+			self.overallScore.text = self:ntos(self.scores.overallScore.data,6)
 			self.overallScore.color = self:getcolor(self.scores.overallScore)
 			self.overallText.color = self.overallScore.color
 		end
