@@ -21,7 +21,7 @@ class 'ProStats'
 			assistAvarage = {x=148,y=8,size=18},
 			minionAvarage = {x=198,y=8,size=18},
 			overallText = {x=254,y=12,size=18},
-			overallScore = {x=260,y=30,size=18},
+			overallScore = {x=255,y=30,size=18},
 			killStatus = {x=30,y=34,size=18},
 			deathStatus = {x=80,y=34,size=18},
 			assistStatus = {x=130,y=34,size=18},
@@ -53,7 +53,9 @@ class 'ProStats'
 
 		self.menu = scriptConfig('Pro Stats', 'prostats')
 		self.menu:addParam('heroBased',  'Champion specific stats',  SCRIPT_PARAM_ONOFF, false)
+		self.menu.heroBased = false
 		self.menu:addParam('recordOff',  'Disable game recording',  SCRIPT_PARAM_ONOFF, false)
+		self.menu.recordOff = false
 		self.menu:addParam("version", "Script Version", SCRIPT_PARAM_INFO, proStatsVersion)
 
 
@@ -79,7 +81,7 @@ class 'ProStats'
 
 		if GetInGameTimer() > 90 then
 			self.menu.recordOff = true
-			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">Game recording disabled, you ran Pro Stats after 1:30</font>")
+			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">Game recording disabled, you ran Pro Stats after 1:30. You can enable it manually from shift menu.</font>")
 		end
 	end
 
