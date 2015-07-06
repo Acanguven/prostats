@@ -5,8 +5,9 @@ class 'ProStats'
 	function ProStats:__init()
 		require "LawsUI"
 		self.ui = LawsUi()
-
+		self.firstRun = false
 		if not FileExist(LIB_PATH .. "/ProStats.db") then
+			self.firstRun = true
 			self:storeData("")
 		end
 		
@@ -51,16 +52,23 @@ class 'ProStats'
 
 
 		self.menu = scriptConfig('Pro Stats', 'prostats')
-		self.menu:addParam('heroBased',  'Champion spesific stats',  SCRIPT_PARAM_ONOFF, false)
+		self.menu:addParam('heroBased',  'Champion specific stats',  SCRIPT_PARAM_ONOFF, false)
 		self.menu:addParam('recordOff',  'Disable game recording',  SCRIPT_PARAM_ONOFF, false)
 		self.menu:addParam("version", "Script Version", SCRIPT_PARAM_INFO, proStatsVersion)
 
 
 		self:createLogTable()
+
+		if self.firstRun then
+			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">Welcome to Pro Stats, this is your first time using this awesome tool! So scripts status will be in idle mode. Please do not make f9 in game! Pro Stats will be working with full functionality when you use it second time.</font>")
+		end
+
 		if self:getSecondStats(5).new then
 			print("<font color=\"#FF0000\">[Pro Stats]:</font> <font color=\"#FFFFFF\">This your first time playing ".. myHero.charName ..", so hero based stats will be disabled for this game.</font>")
 			self.menu.heroBased = false
 		end
+
+
 		self:createViews()
 		AddTickCallback(function() self:updateViews() end)
 		AddTickCallback(function() self:updateState() end)
@@ -167,31 +175,33 @@ class 'ProStats'
 	end
 
 	function ProStats:updateCurrentStats()
-		self.killAvarage.text = self:ntos(self.scores.kill,2)
-		self.deathAvarage.text = self:ntos(self.scores.death,2)
-		self.assistAvarage.text = self:ntos(self.scores.assist,2)
-		self.minionAvarage.text = self:ntos(self.scores.minion,5)
-		self.overallScore.text = self:ntos(self.scores.overall,6)
+		if not self.firstRun then
+			self.killAvarage.text = self:ntos(self.scores.kill,2)
+			self.deathAvarage.text = self:ntos(self.scores.death,2)
+			self.assistAvarage.text = self:ntos(self.scores.assist,2)
+			self.minionAvarage.text = self:ntos(self.scores.minion,5)
+			self.overallScore.text = self:ntos(self.scores.overall,6)
 
-		self.killStatus.text = self:ntos(self.scores.killStatus.data,3)
-		self.killStatus.color = self:getcolor(self.scores.killStatus)
-		self.killAvarage.color = self.killStatus.color
+			self.killStatus.text = self:ntos(self.scores.killStatus.data,3)
+			self.killStatus.color = self:getcolor(self.scores.killStatus)
+			self.killAvarage.color = self.killStatus.color
 
-		self.deathStatus.text = self:ntos(self.scores.deathStatus.data,3)
-		self.deathStatus.color = self:getcolor(self.scores.deathStatus)
-		self.deathAvarage.color = self.deathStatus.color
+			self.deathStatus.text = self:ntos(self.scores.deathStatus.data,3)
+			self.deathStatus.color = self:getcolor(self.scores.deathStatus)
+			self.deathAvarage.color = self.deathStatus.color
 
-		self.assistStatus.text = self:ntos(self.scores.assistStatus.data,3)
-		self.assistStatus.color = self:getcolor(self.scores.assistStatus)
-		self.assistAvarage.color = self.assistStatus.color
+			self.assistStatus.text = self:ntos(self.scores.assistStatus.data,3)
+			self.assistStatus.color = self:getcolor(self.scores.assistStatus)
+			self.assistAvarage.color = self.assistStatus.color
 
-		self.minionStatus.text = self:ntos(self.scores.minionStatus.data,4)
-		self.minionStatus.color = self:getcolor(self.scores.minionStatus)
-		self.minionAvarage.color = self.minionStatus.color
+			self.minionStatus.text = self:ntos(self.scores.minionStatus.data,4)
+			self.minionStatus.color = self:getcolor(self.scores.minionStatus)
+			self.minionAvarage.color = self.minionStatus.color
 
-		self.overallScore.text = self:ntos(self.scores.overallScore.data,6)
-		self.overallScore.color = self:getcolor(self.scores.overallScore)
-		self.overallText.color = self.overallScore.color
+			self.overallScore.text = self:ntos(self.scores.overallScore.data,6)
+			self.overallScore.color = self:getcolor(self.scores.overallScore)
+			self.overallText.color = self.overallScore.color
+		end
 	end
 
 	function ProStats:getcolor(stat)
