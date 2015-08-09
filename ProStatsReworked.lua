@@ -1,4 +1,4 @@
-local proStatsVersion = 2.0
+local proStatsVersion = 3.0
 
 
 class 'ProStats'
@@ -261,13 +261,13 @@ class 'ProStats'
 		        end
 		    end
 
-		    if p.header == 0x00EA then
-		        p.pos = 6
+		    if p.header == 0x00C4 then
+		        p.pos = 18
 		        local type = p:Decode1()
-		        if type == 0xAE then
+		        if type == 0xC9 then
 		            self.scores.deathCurrent = self.scores.deathCurrent + 1
 		        else
-		        	if type == 0xF0  then
+		        	if type == 0xEA  then
 			            self.scores.assistCurrent = self.scores.assistCurrent + 1
 			        else
 			            self.scores.killCurrent = self.scores.killCurrent + 1
