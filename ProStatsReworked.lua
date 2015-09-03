@@ -72,11 +72,14 @@ class 'ProStats'
 
 
 		self:createViews()
+		AddTickCallback(function() 
+			self.scores.killCurrent = myHero:GetInt("CHAMPIONS_KILLED")
+			self.scores.deathCurrent = myHero:GetInt("NUM_DEATHS")
+			self.scores.assistCurrent = myHero:GetInt("ASSISTS")
+			self.scores.minionCurrent = myHero:GetInt("MINIONS_KILLED")
+		end)
 		AddTickCallback(function() self:updateViews() end)
 		AddTickCallback(function() self:updateState() end)
-		AddRecvPacketCallback2(function(p) 
-			self:tracePackets(p) 
-		end)
 		AddTickCallback(function() self:updateCurrentStats() end)
 		
 		
@@ -247,35 +250,6 @@ class 'ProStats'
 		return ret
 	end
 
-
-	function ProStats:tracePackets(p)
-        p.pos = 2
-        local heroID = p:DecodeF()
-        local hero = objManager:GetObjectByNetworkId(heroID)
-        if myHero == hero then
-			if p.header == 0x34 then
-	        	p.pos = 9
-	        	local type = p:Decode1()
-		        if type == 10 then
-		            self.scores.minionCurrent = self.scores.minionCurrent + 1
-		        end
-		    end
-
-		    if p.header == 0x00C4 then
-		        p.pos = 18
-		        local type = p:Decode1()
-		        if type == 0xC9 then
-		            self.scores.deathCurrent = self.scores.deathCurrent + 1
-		        else
-		        	if type == 0xEA  then
-			            self.scores.assistCurrent = self.scores.assistCurrent + 1
-			        else
-			            self.scores.killCurrent = self.scores.killCurrent + 1
-			        end
-			    end
-		    end
-	    end
-	end
 
 	function ProStats:updateState()
 		if self.lastLog + 1 < GetInGameTimer() then
